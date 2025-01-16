@@ -7,6 +7,9 @@ import tg.studio.task.entity.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Класс для обработки Fields
+ */
 @Data
 @AllArgsConstructor
 public class FieldProcessor {
@@ -14,6 +17,12 @@ public class FieldProcessor {
     private int height;
     private int width;
 
+    /**
+     * Проверяет существет ли ячека
+     *
+     * @param row строка
+     * @param col колонка
+     */
     public boolean hasFieldInPosition(int row, int col) {
         if (row >= height || col >= width || row < 0 || col < 0)
             return false;
@@ -21,6 +30,12 @@ public class FieldProcessor {
         return index < height * width && index >= 0;
     }
 
+    /**
+     * Возвращает ячейку по адресу
+     *
+     * @param row строка
+     * @param col колонка
+     */
     public Field getFieldByPos(int row, int col) {
         if (row >= height)
             throw new IllegalArgumentException("row >= height");
@@ -32,10 +47,17 @@ public class FieldProcessor {
     }
 
 
+    /**
+     * Метод для открытия ячейки, рядом с которой нет мин
+     * Открывает соседние ячейки, которые рядом с собой имеют > 0 мин
+     * Внутри вызывается сам себя для соседних ячеек, рядом с коорыми нет мин
+     *
+     * @param field Ячека
+     */
     // Открываем ячейку, рядом с которой нет мин
-    public Field openFieldBehindMinesZero(Field field) {
+    public void openFieldBehindMinesZero(Field field) {
         if (field.isOpen())
-            return field;
+            return;
         field.setValue(String.valueOf(field.getBehindMinesCount()));
 
         var behindFields = getBehindFields(field);
@@ -47,13 +69,15 @@ public class FieldProcessor {
         // Рекурсивно открывам ячейки, если рядом с ними нет мин openFieldBehindMinesZero
         behindFields.stream().filter(f -> f.getBehindMinesCount() == 0)
                 .forEach(this::openFieldBehindMinesZero);
-
-
-        return field;
     }
 
 
-    // Открываем ячейку
+    /**
+     * Открыть ячейку, на которую нажал пользователь по адресу
+     *
+     * @param row строка
+     * @param col колонка
+     */
     public Field turnField(int row, int col) {
         var field = getFieldByPos(row, col);
         // Ячейка уже открыта
@@ -77,11 +101,21 @@ public class FieldProcessor {
         return field;
     }
 
+    /**
+     * Открыть ячейку, на которую нажал пользователь по ссылке
+     *
+     * @param field ячейка
+     */
     public Field turnField(Field field) {
         return turnField(field.getRow(), field.getCol());
     }
 
-    public void openFieldLose(Field field){
+    /**
+     * Вызывается для каждой ячейки при поражении
+     *
+     * @param field ячейка
+     */
+    public void openFieldLose(Field field) {
         if (field.isOpen())
             return;
 
@@ -93,6 +127,12 @@ public class FieldProcessor {
         // Ячейка - пустая
         field.setValue(String.valueOf(field.getBehindMinesCount()));
     }
+
+    /**
+     * Вызывается для каждой ячейки при победе
+     *
+     * @param field ячейка
+     */
     public void openFieldWin(Field field) {
         if (field.isOpen())
             return;
@@ -107,10 +147,23 @@ public class FieldProcessor {
     }
 
 
+    /**
+     * Получить соседние ячейки по ссылке ячейки
+     *
+     * @param field ячейкп
+     * @return List соседних ячеек
+     */
     public List<Field> getBehindFields(Field field) {
         return getBehindFields(field.getRow(), field.getCol());
     }
 
+    /**
+     * Получить соседние ячейки по ссылке адресу
+     *
+     * @param row строка
+     * @param col колонка
+     * @return List соседних ячеек
+     */
     public List<Field> getBehindFields(int row, int col) {
         var res = new ArrayList<Field>();
         int rowUp = row + 1;

@@ -5,9 +5,7 @@ import tg.studio.task.request.NewGameRequest;
 import tg.studio.task.response.GameInfoResponse;
 
 public interface GameService {
-
     GameInfoResponse create(NewGameRequest request) throws Exception;
-
     GameInfoResponse turn(GameTurnRequest request) throws Exception;
 
 }

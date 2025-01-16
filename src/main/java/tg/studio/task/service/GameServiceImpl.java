@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -102,14 +101,12 @@ public class GameServiceImpl implements GameService {
         return new GameInfoResponse(game, fields);
     }
 
-//    private void endGame(Game game, List<Field> fields, boolean isWin) {
-//        game.setCompleted(true);
-//        for(var field : fields){
-//            field.
-//        }
-//    }
-
-
+    /**
+     * Генерирует индексы для мин
+     *
+     * @param mine_count количество мин
+     * @param size       размер height x width игрового поля
+     */
     private Set<Integer> genMineIndexes(int mine_count, int size) {
         Set<Integer> numbers = new HashSet<>();
         Random random = new Random();
@@ -118,7 +115,6 @@ public class GameServiceImpl implements GameService {
             int num = random.nextInt(size + 1);
             numbers.add(num);
         }
-
         return numbers;
     }
 }
