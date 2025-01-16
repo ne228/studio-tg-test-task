@@ -11,7 +11,7 @@
     <groupId>tg.studio</groupId>
     <artifactId>task</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>test-task</name>
     <description>test-task</description>
     <url/>
@@ -99,6 +99,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>minesweeper</finalName>
     </build>
 
 </project>
