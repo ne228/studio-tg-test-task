@@ -36,7 +36,7 @@ public class GameController {
     }
 
     @PostMapping("/turn")
-    public ResponseEntity<?> tttt(@RequestBody GameTurnRequest request) {
+    public ResponseEntity<?> turn(@RequestBody GameTurnRequest request) {
         try {
             return ResponseEntity.ok().body(gameService.turn(request));
         } catch (Exception exception) {
